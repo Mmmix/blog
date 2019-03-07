@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html class="no-js">
+	<head>
+		<meta charset="UTF-8" UTF-8"">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="renderer" content="webkit">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="google-site-verification" content="DW8ROJKL3tBANCDQEPSxJYp22luiSVh_HpKDZDOwI68" />
+		<title>
+			博客管理
+		</title>
+
+		<link rel="stylesheet" href="../layui/css/layui.css">
+		<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+		<link rel="stylesheet" href="../css/mamagementStyle.css">
+		<script src="../layui/layui.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/vue-resource.min.js"></script>
+
+	</head>
+	<body class="layui-layout-body">
+		<div class="layui-layout layui-layout-admin" id="app">
+			<div class="layui-header">
+				<div class="layui-logo">
+					<h1><a href="/"><i class="fa fa-home"></i><span>我的博客</span></a></h1>
+				</div>
+				<!-- 头部区域（可配合layui已有的水平导航） -->
+				<ul class="layui-nav layui-layout-left layui-hide-xs">
+					<li class="layui-nav-item side-switch"><button class="layui-btn"><i class="layui-icon layui-icon-add-1" style="color: #FFFFFF;"></i>写博客</li>
+					<li class="layui-nav-item"><a href="/">首页</a></li>
+				</ul>
+				<ul class="layui-nav layui-layout-right">
+					<li class="layui-nav-item layui-hide-xs">
+
+
+						<div class="layui-form search-form">
+							<input type="search" class="search-field layui-input t-ip" placeholder="输入关键字搜索" required
+							 lay-verify="required" autocomplete="off" v-model="title" v-on:blur="getData(1);"/>
+						</form>
+					</li>
+					<li class="layui-nav-item side-btn layui-hide-sm layui-this"><a href="javascript:;"><i class="fa fa-bars"></i></a></li>
+				</ul>
+			</div>
+			<div class="side layui-bg-black" id="sidebar-nav">
+				<div class="side-logo">
+					<h1><a href="/" title=""><i class="fa fa-home"></i><span> 我的博客</span></a></h1>
+				</div>
+				<div class="layui-side-scroll">
+					<div class="user-side">
+						<img src="http://weilai.info/wp-content/uploads/2019/02/logo.jpg" alt="logo" class="side-upic" height="80px">
+						<div class="t-t">
+
+							<p>
+								找到自己想做的事，并为之坚持！ </p>
+							<span><i class="fa fa-map-marker"></i> China</span>
+						</div>
+						<div class="t-i">
+							<a href="javascript:;" target="_blank" rel="nofollow" class="wxbusinesscard"><i class="fa fa-weixin fa-fw"></i>
+								<div class="wxbusinesscard_box">
+									<img src="" alt="扫一扫">
+								</div>
+							</a>
+							<a href="javascript:;" rel="nofollow" target="_blank"><i class="fa fa-qq fa-fw"></i></a>
+							<a href="javascript:;" rel="nofollow"><i class="fa fa-envelope fa-fw"></i></a>
+						</div>
+					</div>
+					<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="nav">
+						<li class="layui-nav-item"><a href="/"><i class="fa fa-circle-o fa-fw"></i><span>首页</span></a></li>
+
+						<li class="layui-nav-item layui-nav-itemed"><a href="javascript:;" class="nav-item-a"><i class="fa fa-fw fa-lemon-o"></i><span>我的博客</span></a>
+						
+						</li>
+						<!--循环输出独立页面-->
+						<li class="layui-nav-item">
+							<a href="javascript:;" class="nav-item-a"><i class="fa fa-fw fa-smile-o"></i><span>博客回复</span><!-- <span class="layui-nav-more"></span> --></a>
+				</div>
+			</div>
+
+
+			<div class="layui-body">
+				<!-- 默认面包屑 -->
+				<div class="layui-fluid map">
+
+				</div>
+				<div class="layui-fluid main-wp">
+					<div class="layui-row main layui-col-space15">
+						<div class="content layui-col-md9 layui-col-lg10">
+							<div class="about-life">
+								<div class="t-w">
+									<div class="t-u">
+										<img height="120" width="120" src="http://www.weilai.info/wp-content/uploads/2019/02/timg-1.jpg"><br />
+										<a style="margin-left: 30px;">修改头像</a>
+									</div>
+									<div class="t-t">
+										<h1>槑大佬<span><a class="layui-icon layui-icon-edit"></a>全栈工程师</span>
+										</h1>
+										<div class="t-d">
+											<p>
+												当你不知该如何进行抉择时，请选择那条让你感觉很难受或很困难的决定！ </p>
+										</div>
+										<div class="t-i">
+											<a class="layui-btn layui-btn-radius layui-btn-sm" href="javascript:;"> 关于我</a>
+											<a class="layui-btn layui-btn-radius layui-btn-sm" href="javascript:;" rel="nofollow" target="_blank"><i
+												 class="fa fa-qq"></i></a>
+											<a class="layui-btn layui-btn-radius layui-btn-sm" href="javascript:;" rel="nofollow" target="_blank"><i
+												 class="fa fa-weixin"></i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="title-life">
+								<h3><i class="fa fa-smile-o"></i> 我的博客</h3>
+
+								<span> 共有{{listData.total}}篇博客</span>
+
+							</div>
+							<div class="mylife">
+
+								<ol class="comment-list">
+
+									<li v-for="blog in listData.list">
+										<div class="t-p">
+											<!-- <img class="avatar" src="http://weilai.info/wp-content/uploads/2019/02/logo.jpg" alt="我的博客"> -->
+											<button  class="layui-btn layui-btn-sm layui-btn-normal">修改</button><br />
+											<button  class="layui-btn layui-btn-sm layui-btn-danger" style="margin-top: 10px;">删除</button>
+										</div>
+										<div class="t-r">
+											<strong><a href="http://www.weilai.info" rel="external nofollow">{{blog.title}}</a></strong>
+											<p>
+											</p>
+											<p>
+												<p>{{blog.context}}</p>
+											</p>
+											<span></span>
+											<p>
+											</p>
+											<span>
+												修改日期：{{blog.updateTime}}
+											</span>
+											<span style="float: right;">
+												阅读数：{{blog.read}} | 评论数：{{blog.comment}}
+											</span>
+										</div>
+									</li>
+
+								</ol>
+								<!-- 分页 -->
+								<div id="pages" style="text-align: center;"></div>
+							</div>
+						</div>
+
+						<div class="sidebar layui-col-md3 layui-col-lg2">
+							<div class="column">
+								<h3 class="title-sidebar"><i class="fa fa-folder"></i>栏目分类</h3>
+
+								<ul id="menu-%e7%b1%bb%e5%88%ab" class="">
+									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-16"><a href="http://www.weilai.info/category/front_end"><i
+											 class="fa fa-folder"></i> 前端<span class="layui-badge layui-bg-gray">9</span></a></li>
+									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18"><a href="http://www.weilai.info/category/rear_end"><i
+											 class="fa fa-folder"></i> 后端<span class="layui-badge layui-bg-gray">10</span></a></li>
+									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-264"><a href="http://www.weilai.info/category/tool"><i
+											 class="fa fa-folder"></i> 工具<span class="layui-badge layui-bg-gray">2</span></a></li>
+								</ul>
+
+
+
+							</div>
+
+							<div class="dynamic">
+								<h3 class="title-sidebar"><i class="fa fa-meh-o"></i>博主念叨 ~ </h3>
+								<ul>
+
+									<a href="/mylife">
+										<li>
+											<span class="layui-badge-dot layui-bg-gray"></span>
+											<p>
+												<p>最近的项目又用到了NODE的MYSQL模块，我在之前的基础上，对数据库的CURD操作，进行了封装，并且可以满足同时连接多个数据库的需求。</p>
+												<small>2019年03月05日</small>
+											</p>
+										</li>
+									</a>
+									<a href="/mylife">
+										<li>
+											<span class="layui-badge-dot layui-bg-gray"></span>
+											<p>
+												<p>自己学会了某种技术并不算很厉害，厉害的是还能轻松的教会其他人！</p>
+												<small>2019年03月04日</small>
+											</p>
+										</li>
+									</a>
+									<a href="/mylife">
+										<li>
+											<span class="layui-badge-dot layui-bg-gray"></span>
+											<p>
+												<p>完了，咳嗽了一周，感觉要狗带的节奏。啊啊啊，我还年轻，老婆未取，父母未孝，事业未定，还有一本Node.js的书没看完。。。我还想要个孩子呢。。。。。</p>
+												<small>2019年03月01日</small>
+											</p>
+										</li>
+									</a>
+									<a href="/mylife">
+										<li>
+											<span class="layui-badge-dot layui-bg-gray"></span>
+											<p>
+												<p>今天老板来参见会议，并发表了自己的一些方法，我觉得这是我见过他讲的最好的一次，也是我收获最多的一次。甚至提到了一个创业的点子，Very Good~</p>
+												<small>2019年02月25日</small>
+											</p>
+										</li>
+									</a>
+									<a href="/mylife">
+										<li>
+											<span class="layui-badge-dot layui-bg-gray"></span>
+											<p>
+												<p>周末了，每次周末的时候竟然总想着上班，看来真的是单身久了。</p>
+												<small>2019年02月23日</small>
+											</p>
+										</li>
+									</a>
+									<a href="/mylife">
+										<li>
+											<span class="layui-badge-dot layui-bg-gray"></span>
+											<p>
+												<p>前天提了离职申请，虽说之前已有心理准备，却仍有一些不舍，这家公司还是非常不错的，也学习到了很多，也为我以后的路做了坚实的铺垫，感谢&#x1f64f;，接下来该准备迎接人生的下一段旅程。</p>
+												<small>2019年02月20日</small>
+											</p>
+										</li>
+									</a>
+
+
+								</ul>
+							</div>
+
+
+							<!-- 标签 -->
+							<div class="tags">
+								<h3 class="title-sidebar"><i class="fa fa-tags"></i>标签云</h3>
+								<div>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/node" class="tag-cloud-link tag-link-10 tag-link-position-1"
+									 style="font-size: 14px;">node</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/php" class="tag-cloud-link tag-link-16 tag-link-position-2"
+									 style="font-size: 14px;">php</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/ecshop" class="tag-cloud-link tag-link-14 tag-link-position-3"
+									 style="font-size: 14px;">ecshop</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/linux" class="tag-cloud-link tag-link-20 tag-link-position-4"
+									 style="font-size: 14px;">linux</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/nginx" class="tag-cloud-link tag-link-17 tag-link-position-5"
+									 style="font-size: 14px;">nginx</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/html" class="tag-cloud-link tag-link-18 tag-link-position-6"
+									 style="font-size: 14px;">html</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/%e7%81%ab%e8%bd%a6%e5%a4%b4"
+									 class="tag-cloud-link tag-link-24 tag-link-position-7" style="font-size: 14px;">火车头</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/excel" class="tag-cloud-link tag-link-22 tag-link-position-8"
+									 style="font-size: 14px;">excel</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/electron" class="tag-cloud-link tag-link-19 tag-link-position-9"
+									 style="font-size: 14px;">electron</a>
+									<a class='layui-btn layui-btn-xs layui-bg-gray' href="http://www.weilai.info/tag/grep" class="tag-cloud-link tag-link-21 tag-link-position-10"
+									 style="font-size: 14px;">grep</a> </div>
+							</div>
+
+
+						</div>
+					</div>
+				</div>
+				<!-- end -->
+
+
+				<div class="footer layui-fluid">
+					<div class="layui-row layui-fluid">
+						<div class="layui-col-md9">
+							<span class="layui-breadcrumb" lay-separator="|">
+
+								<a href="http://www.weilai.info/mylife">博主念叨</a>
+								<a href="http://www.weilai.info/archive">文章归档</a>
+								<a href="http://www.weilai.info/links">友情链接</a>
+								<a href="http://www.weilai.info/privacy-policy">隐私政策</a>
+
+								</br>
+								<span>声明：版权归原作者所有，本站所有数据资源仅供学习与参考，请勿用于商业用途。</span>
+							</span>
+						</div>
+						<div class="layui-col-md3 t-r">
+							<a href="javascript:;" target="_blank" rel="nofollow" class="wxbusinesscard"><i class="fa fa-weixin fa-fw"></i>
+								<div class="wxbusinesscard_box">
+									<img src="" alt="扫一扫">
+								</div>
+							</a>
+							<a href="javascript:;" rel="nofollow" target="_blank"><i class="fa fa-qq fa-fw"></i></a>
+							<a href="javascript:;" rel="nofollow" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+						</div>
+						<div class="layui-col-md12 t-copy">
+							<span class="layui-breadcrumb" lay-separator="/">
+								<span><i class="fa fa-copyright"></i> 2019 <a class="layui-" href="" target="_blank">我的博客</a></span>
+								<span class="layui-hide-xs">Poweed by <a href="/" target="_blank" rel="nofollow">Wordpress</a></span>
+								<span>Theme by <a href="/" target="_blank">我的博客</a></span>
+								<a href="/" target="_blank" rel="nofollow">晋ICP备17009725号</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 主体结束 -->
+
+
+
+		</div>
+
+		<script type="text/javascript" src="../js/blogManagement.js"></script>
+	</body>
+</html>
