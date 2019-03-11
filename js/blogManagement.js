@@ -10,9 +10,30 @@ var app = new Vue({
 		addTag: '',
 		addCategory: '',
 		addContent: '',
-		selected: ''
+		selected: '',
 	},
 	methods: {
+		deleteBlog: function(n) {
+			layui.layer.confirm('确认要删除吗？', {
+				icon: 3,
+				title: '确认删除'
+			}, function(index) {
+				layui.layer.close(index);
+				Vue.http.get(localhost + '/admin/deleteBlog/' + n).then(function(res) {
+					console.log(app);
+					if (res.body.code == 200) {
+						app.getData(app.listData.pageNum);
+						//app.getPage();
+						layui.layer.msg('删除成功', {icon: 1});
+					}else{
+						layui.layer.msg('删除失败', {icon: 2});
+					}
+
+				}, function() {
+					console.log('获取博客信息失败！');
+				});
+			});
+		},
 		getPage: function(n) {
 			layui.use(['laypage', 'layer'], function() {
 				var laypage = layui.laypage,
@@ -21,7 +42,8 @@ var app = new Vue({
 				laypage.render({
 					elem: 'pages',
 					count: app.listData.total, //数据总数
-					limit: app.listData.size, //每页显示的条数。laypage将会借助 count 和 limit 计算出分页数。、
+					limit: app.listData.size, //每页显示的条数。laypage将会借助 count 和 limit 计算出分页数。
+					curr: app.listData.pageNum,
 					jump: function(obj, first) { //obj包含了当前分页的所有参数：
 						//首次不执行
 						if (!first) {
@@ -42,7 +64,7 @@ var app = new Vue({
 				_this.listData = res.body.data;
 				console.log(app);
 
-				if (n == 1) {
+				if (n <= 1 || n > app.listData.pages) {
 					_this.getPage();
 				}
 
@@ -135,9 +157,7 @@ var app = new Vue({
 				return true;
 			}
 		}
-
 	}
-
 });
 app.getData(1);
 //app.getUser(1);
