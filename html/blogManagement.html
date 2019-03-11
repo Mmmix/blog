@@ -63,12 +63,12 @@
 					<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="nav">
 						<li class="layui-nav-item"><a href="/"><i class="fa fa-circle-o fa-fw"></i><span>首页</span></a></li>
 
-						<li class="layui-nav-item layui-nav-itemed"><a href="javascript:;" class="nav-item-a"><i class="fa fa-fw fa-lemon-o"></i><span>我的博客</span></a>
+						<li class="layui-nav-item layui-nav-itemed"><a href="javascript:;" class="nav-item-a" @click="showBlog();"><i class="fa fa-fw fa-lemon-o"></i><span>我的博客</span></a>
 
 						</li>
 						<!--循环输出独立页面-->
 						<li class="layui-nav-item">
-							<a href="javascript:;" class="nav-item-a"><i class="fa fa-fw fa-smile-o"></i><span>博客回复</span><!-- <span class="layui-nav-more"></span> --></a>
+							<a href="javascript:;" class="nav-item-a" @click="showComment();"><i class="fa fa-fw fa-smile-o"></i><span>博客回复</span></a>
 					</ul>
 				</div>
 			</div>
@@ -87,7 +87,7 @@
 								<div class="t-w">
 									<div class="t-u">
 										<img height="120" width="120" src="http://www.weilai.info/wp-content/uploads/2019/02/timg-1.jpg"><br />
-										<a style="margin-left: 30px;">修改头像</a>
+										<a style="margin-left: 30px;" href="javascript:;">修改头像</a>
 									</div>
 									<div class="t-t">
 										<h1>槑大佬<span><a class="layui-icon layui-icon-edit"></a>全栈工程师</span>
@@ -106,13 +106,19 @@
 									</div>
 								</div>
 							</div>
-							<div class="title-life">
+							<div class="title-life" ref="blogHead">
 								<h3><i class="fa fa-smile-o"></i> 我的博客</h3>
 
 								<span> 共有{{listData.total}}篇博客</span>
 
 							</div>
-							<div class="mylife">
+							<div class="title-life" ref="commentHead"  style="display: none;">
+								<h3><i class="fa fa-smile-o"></i> 我的回复</h3>
+							
+								<span> 共有{{listComment.total}}条回复</span>
+							
+							</div>
+							<div class="mylife" ref="blogBody">
 
 								<ol class="comment-list">
 
@@ -144,6 +150,39 @@
 								</ol>
 								<!-- 分页 -->
 								<div id="pages" style="text-align: center;"></div>
+							</div>
+							<div class="mylife" ref="commentBody" style="display: none;">
+							
+								<ol class="comment-list">
+							
+									<li v-for="comment in listComment.list">
+										<div class="t-p">
+											<!-- <img class="avatar" src="http://weilai.info/wp-content/uploads/2019/02/logo.jpg" alt="我的博客"> -->
+											<button class="layui-btn layui-btn-sm layui-btn-normal" @click="modBlog(blog.id);">回复</button><br />
+											<button class="layui-btn layui-btn-sm layui-btn-danger" style="margin-top: 10px;" @click="deleteBlog(blog.id);">删除</button>
+										</div>
+										<div class="t-r">
+											<strong><a href="http://www.weilai.info" rel="external nofollow">回复：{{comment.blogTitle}}</a></strong>
+											<p>
+											</p>
+											<p>
+												<p>{{comment.content}}</p>
+											</p>
+											<span></span>
+											<p>
+											</p>
+											<span>
+												回复日期：{{comment.createTime}}
+											</span>
+											<span style="float: right;">
+												评论人：{{comment.guestName}}
+											</span>
+										</div>
+									</li>
+							
+								</ol>
+								<!-- 分页 -->
+								<div id="CommentPages" style="text-align: center;"></div>
 							</div>
 						</div>
 
@@ -278,7 +317,7 @@
 						<div class="layui-col-md3 t-r">
 							<a href="javascript:;" target="_blank" rel="nofollow" class="wxbusinesscard"><i class="fa fa-weixin fa-fw"></i>
 								<div class="wxbusinesscard_box">
-									<img src="" alt="扫一扫">
+									
 								</div>
 							</a>
 							<a href="javascript:;" rel="nofollow" target="_blank"><i class="fa fa-qq fa-fw"></i></a>

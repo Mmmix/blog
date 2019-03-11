@@ -1,10 +1,12 @@
 var localhost = "http://localhost:8080";
 var editIndex = '';
+var myPageSize = 5;
 layui.use(['layer', 'layedit', 'jquery'], function() {});
 var app = new Vue({
 	el: '#app',
 	data: {
 		listData: [],
+		listComment: [],
 		searchTitle: '',
 		addTitle: '',
 		addTag: '',
@@ -61,7 +63,7 @@ var app = new Vue({
 			var _this = this;
 			Vue.http.get(localhost + '/blog/list/' + n, {
 				params: {
-					pageSize: 5,
+					pageSize: myPageSize,
 					title: _this.searchTitle
 				}
 			}).then(function(res) {
@@ -158,7 +160,7 @@ var app = new Vue({
 						title: '修改博客',
 						content: layui.$('#formbox'),
 						success: function(layero, index) {
-							layui.form.render();							
+							layui.form.render();
 						},
 						btn: ['确认', '取消'],
 						yes: function(index, layero) {
@@ -229,6 +231,56 @@ var app = new Vue({
 			} else {
 				return true;
 			}
+		},
+		showBlog: function() {
+			app.$refs.blogHead.style.display = '';
+			app.$refs.blogBody.style.display = '';
+			app.$refs.commentHead.style.display = 'none';
+			app.$refs.commentBody.style.display = 'none';
+			app.getData(1);
+		},
+		showComment: function() {
+			app.$refs.blogHead.style.display = 'none';
+			app.$refs.blogBody.style.display = 'none';
+			app.$refs.commentHead.style.display = '';
+			app.$refs.commentBody.style.display = '';
+			app.getComment(1);
+		},
+		getCommentPage: function(n) {
+			layui.use(['laypage', 'layer'], function() {
+				var laypage = layui.laypage,
+					layer = layui.layer;
+
+				laypage.render({
+					elem: 'CommentPages',
+					count: app.listComment.total, //数据总数
+					limit: app.listComment.size, //每页显示的条数。laypage将会借助 count 和 limit 计算出分页数。
+					curr: app.listComment.pageNum,
+					jump: function(obj, first) { //obj包含了当前分页的所有参数：
+						//首次不执行
+						if (!first) {
+							app.getComment(obj.curr);
+						}
+					}
+				});
+			});
+		},
+		getComment: function(n) {
+			Vue.http.get(localhost + '/admin/listComment/' + n, {
+				params: {
+					pageSize: myPageSize
+				}
+			}).then(function(res) {
+				app.listComment = res.body.data;
+				console.log(app);
+
+				if (n <= 1 || n > app.listData.pages) {
+					app.getCommentPage();
+				}
+
+			}, function() {
+				console.log('获取博客信息失败！');
+			});
 		}
 	}
 });
