@@ -24,9 +24,13 @@ var app = new Vue({
 					if (res.body.code == 200) {
 						app.getData(app.listData.pageNum);
 						//app.getPage();
-						layui.layer.msg('删除成功', {icon: 1});
-					}else{
-						layui.layer.msg('删除失败', {icon: 2});
+						layui.layer.msg('删除成功', {
+							icon: 1
+						});
+					} else {
+						layui.layer.msg('删除失败', {
+							icon: 2
+						});
 					}
 
 				}, function() {
@@ -76,6 +80,9 @@ var app = new Vue({
 			layui.use(['layer', 'layedit', 'jquery'], function() {
 				var layer = layui.layer;
 				var layedit = layui.layedit;
+				app.addTitle = app.addTag = app.addContent = '';
+				layui.$('#addCategory').val('');
+				layui.$('#add').val('');
 				layer.open({
 					type: 1,
 					maxmin: true,
@@ -102,7 +109,6 @@ var app = new Vue({
 			});
 		},
 		submitAdd: function(index) {
-			console.log(app.addContent);
 			if (app.checkTitle() && app.checkTag() && app.checkCategory() && app.checkContent()) {
 				Vue.http.post(localhost + '/admin/add', {
 					title: app.addTitle,
@@ -119,6 +125,73 @@ var app = new Vue({
 						layui.layer.close(index);
 						app.addTitle = app.addTag = app.addContent = '';
 						layui.$('#addCategory').val('');
+						app.getData(1);
+					};
+				}, function() {
+					console.log('获取博客信息失败！');
+				});
+			}
+		},
+		modBlog: function(id) {
+			layui.use(['layer', 'layedit', 'jquery'], function() {
+				var layer = layui.layer;
+				var layedit = layui.layedit;
+				Vue.http.get(localhost + '/blog/detail', {
+					params: {
+						id: id
+					}
+				}).then(function(res) {
+					app.addTitle = res.body.data.title;
+					layui.$('#add').val(res.body.data.context);
+					layui.$('#addCategory').val(res.body.data.category);
+					layedit.set({
+						uploadImage: {
+							url: localhost + '/admin/richtext_img_upload' //接口url
+							//type:'get'
+						}
+					});
+					editIndex = layedit.build('add');
+					layer.open({
+						type: 1,
+						maxmin: true,
+						area: '800px',
+						title: '修改博客',
+						content: layui.$('#formbox'),
+						success: function(layero, index) {
+							layui.form.render();							
+						},
+						btn: ['确认', '取消'],
+						yes: function(index, layero) {
+							//按钮【按钮一】的回调
+							app.submitMod(index, id);
+						}
+					});
+				}, function() {
+					console.log('获取博客信息失败！');
+				});
+
+			});
+		},
+		submitMod: function(index, id) {
+			if (app.checkTitle() && app.checkTag() && app.checkCategory() && app.checkContent()) {
+				Vue.http.post(localhost + '/admin/modifyBlog', {
+					id: id,
+					title: app.addTitle,
+					category: layui.$('#addCategory').val(),
+					context: layui.layedit.getContent(editIndex),
+					tags: app.addTag
+				}, {
+					emulateJSON: true
+				}).then(function(res) {
+					console.log(res);
+					if (res.body.code == 200) {
+						layui.layer.msg(res.body.data + '!', {
+							icon: 1
+						});
+						layui.layer.close(index);
+						app.addTitle = app.addTag = app.addContent = '';
+						layui.$('#addCategory').val('');
+						app.getData(app.listData.pageNum);
 					};
 				}, function() {
 					console.log('获取博客信息失败！');
