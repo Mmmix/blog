@@ -25,7 +25,7 @@
 					<li class="layui-nav-item side-switch"><button class="layui-btn" v-on:click="addBlog()"><i class="layui-icon layui-icon-add-1"
 							 style="color: #FFFFFF;"></i>写博客</button>
 					</li>
-					<li class="layui-nav-item"><a href="/">首页</a></li>
+					<li class="layui-nav-item"><a href="./index.html">首页</a></li>
 				</ul>
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item layui-hide-xs">
@@ -39,7 +39,7 @@
 			</div>
 			<div class="side layui-bg-black" id="sidebar-nav">
 				<div class="side-logo">
-					<h1><a href="/" title=""><i class="fa fa-home"></i><span> 我的博客</span></a></h1>
+					<h1><a href="blogManagement.html" title=""><i class="fa fa-home"></i><span> 我的博客</span></a></h1>
 				</div>
 				<div class="layui-side-scroll">
 					<div class="user-side">
@@ -61,7 +61,7 @@
 						</div>
 					</div>
 					<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="nav">
-						<li class="layui-nav-item"><a href="/"><i class="fa fa-circle-o fa-fw"></i><span>首页</span></a></li>
+						<li class="layui-nav-item"><a href="./index.html"><i class="fa fa-circle-o fa-fw"></i><span>首页</span></a></li>
 
 						<li class="layui-nav-item layui-nav-itemed"><a href="javascript:;" class="nav-item-a" @click="showBlog();"><i class="fa fa-fw fa-lemon-o"></i><span>我的博客</span></a>
 
@@ -71,7 +71,7 @@
 							<a href="javascript:;" class="nav-item-a" @click="showComment();"><i class="fa fa-fw fa-smile-o"></i><span>博客回复</span></a>
 						</li>
 						<li class="layui-nav-item">
-							<a href="javascript:;" class="nav-item-a" @click="showComment();"><i class="fa fa-fw fa-sign-out"></i><span>注销登录</span></a>
+							<a href="javascript:;" class="nav-item-a" ><i class="fa fa-fw fa-sign-out"></i><span>注销登录</span></a>
 						</li>
 					</ul>
 				</div>
@@ -133,7 +133,7 @@
 											<button class="layui-btn layui-btn-sm layui-btn-danger" style="margin-top: 10px;" @click="deleteBlog(blog.id);">删除</button>
 										</div>
 										<div class="t-r">
-											<strong><a href="http://www.weilai.info" rel="external nofollow">{{blog.title}}</a></strong>
+											<strong><a href="./details.html" @click="jumpToDetail(blog.id);" rel="external nofollow">{{blog.title}}</a></strong>
 											<p>
 											</p>
 											<p>
@@ -166,7 +166,7 @@
 											<button class="layui-btn layui-btn-sm layui-btn-danger" style="margin-top: 10px;" @click="deleteComment(comment.id);">删除</button>
 										</div>
 										<div class="t-r">
-											<strong><a href="http://www.weilai.info" rel="external nofollow">回复：{{comment.blogTitle}}</a></strong>
+											<strong><a href="./details.html" @click="jumpToDetail(comment.blogId);" rel="external nofollow">回复：{{comment.blogTitle}}</a></strong>
 											<p>
 											</p>
 											<p>
@@ -211,16 +211,16 @@
 								<h3 class="title-sidebar"><i class="fa fa-meh-o"></i>最近留言</h3>
 								<ul>
 
-									<a href="/mylife">
+									<a href="./leacots.html" v-for="message in listMessage.list">
 										<li>
 											<span class="layui-badge-dot layui-bg-gray"></span>
 											<p>
-												<p>最近的项目又用到了NODE的MYSQL模块，我在之前的基础上，对数据库的CURD操作，进行了封装，并且可以满足同时连接多个数据库的需求。</p>
-												<small>2019年03月05日</small>
+												<p>{{message.content}}</p>
+												<small>{{message.createTime}}</small>
 											</p>
 										</li>
 									</a>
-									<a href="/mylife">
+									<!-- <a href="/mylife">
 										<li>
 											<span class="layui-badge-dot layui-bg-gray"></span>
 											<p>
@@ -264,7 +264,7 @@
 												<small>2019年02月20日</small>
 											</p>
 										</li>
-									</a>
+									</a> -->
 
 
 								</ul>

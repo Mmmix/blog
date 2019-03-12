@@ -7,6 +7,7 @@ var app = new Vue({
 	data: {
 		listData: [],
 		listComment: [],
+		listMessage: [],
 		searchTitle: '',
 		addTitle: '',
 		addTag: '',
@@ -365,8 +366,25 @@ var app = new Vue({
 			}, function() {
 				console.log('获取博客信息失败！');
 			});
+		},
+		getMessage: function(pageNum) {
+			Vue.http.get(localhost + '/message/list/', {
+				params: {
+					pageNum: pageNum,
+					pageSize: 8
+				}
+			}).then(function(res) {
+				app.listMessage = res.body.data;
+				console.log(app);		
+			}, function() {
+				console.log('获取留言信息失败！');
+			});
+		},
+		jumpToDetail:function(blogId){
+			sessionStorage.setItem("detailId", blogId);
 		}
 	}
 });
 app.getData(1);
+app.getMessage(1);
 //app.getUser(1);
