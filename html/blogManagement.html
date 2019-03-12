@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html class="no-js">
 	<head>
-		<meta charset="UTF-8" UTF-8"">
+		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="renderer" content="webkit">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -31,7 +31,7 @@
 					<li class="layui-nav-item layui-hide-xs">
 						<div class="layui-form search-form">
 							<input type="search" class="search-field layui-input t-ip" placeholder="输入关键字搜索" required lay-verify="required"
-							 autocomplete="off" v-model="searchTitle" v-on:blur="getData(1);" />
+							 autocomplete="off" v-model="searchTitle" v-on:blur="showBlog();" />
 						</div>
 					</li>
 					<li class="layui-nav-item side-btn layui-hide-sm layui-this"><a href="javascript:;"><i class="fa fa-bars"></i></a></li>
@@ -139,7 +139,7 @@
 											<p>
 											</p>
 											<span>
-												修改日期：{{blog.updateTime}}
+												修改时间：{{blog.updateTime}}
 											</span>
 											<span style="float: right;">
 												阅读数：{{blog.read}} | 评论数：{{blog.comment}}
@@ -158,8 +158,8 @@
 									<li v-for="comment in listComment.list">
 										<div class="t-p">
 											<!-- <img class="avatar" src="http://weilai.info/wp-content/uploads/2019/02/logo.jpg" alt="我的博客"> -->
-											<button class="layui-btn layui-btn-sm layui-btn-normal" @click="modBlog(blog.id);">回复</button><br />
-											<button class="layui-btn layui-btn-sm layui-btn-danger" style="margin-top: 10px;" @click="deleteBlog(blog.id);">删除</button>
+											<button class="layui-btn layui-btn-sm layui-btn-normal" @click="replyComment(comment.id, comment.blogId);">回复</button><br />
+											<button class="layui-btn layui-btn-sm layui-btn-danger" style="margin-top: 10px;" @click="deleteComment(comment.id);">删除</button>
 										</div>
 										<div class="t-r">
 											<strong><a href="http://www.weilai.info" rel="external nofollow">回复：{{comment.blogTitle}}</a></strong>
@@ -172,7 +172,7 @@
 											<p>
 											</p>
 											<span>
-												回复日期：{{comment.createTime}}
+												回复时间：{{comment.createTime}}
 											</span>
 											<span style="float: right;">
 												评论人：{{comment.guestName}}
@@ -192,11 +192,11 @@
 
 								<ul id="menu-%e7%b1%bb%e5%88%ab" class="">
 									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-16"><a href="http://www.weilai.info/category/front_end"><i
-											 class="fa fa-folder"></i> 前端<span class="layui-badge layui-bg-gray">9</span></a></li>
+											 class="fa fa-folder"></i> 学习<!-- <span class="layui-badge layui-bg-gray">9</span> --></a></li>
 									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18"><a href="http://www.weilai.info/category/rear_end"><i
-											 class="fa fa-folder"></i> 后端<span class="layui-badge layui-bg-gray">10</span></a></li>
+											 class="fa fa-folder"></i> 生活<!-- <span class="layui-badge layui-bg-gray">10</span> --></a></li>
 									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-264"><a href="http://www.weilai.info/category/tool"><i
-											 class="fa fa-folder"></i> 工具<span class="layui-badge layui-bg-gray">2</span></a></li>
+											 class="fa fa-folder"></i> 感悟<!-- <span class="layui-badge layui-bg-gray">2</span> --></a></li>
 								</ul>
 
 
@@ -204,7 +204,7 @@
 							</div>
 
 							<div class="dynamic">
-								<h3 class="title-sidebar"><i class="fa fa-meh-o"></i>博主念叨 ~ </h3>
+								<h3 class="title-sidebar"><i class="fa fa-meh-o"></i>最近留言</h3>
 								<ul>
 
 									<a href="/mylife">
@@ -310,7 +310,7 @@
 								<a href="http://www.weilai.info/links">友情链接</a>
 								<a href="http://www.weilai.info/privacy-policy">隐私政策</a>
 
-								</br>
+								<br />
 								<span>声明：版权归原作者所有，本站所有数据资源仅供学习与参考，请勿用于商业用途。</span>
 							</span>
 						</div>
@@ -328,7 +328,7 @@
 								<span><i class="fa fa-copyright"></i> 2019 <a class="layui-" href="" target="_blank">我的博客</a></span>
 								<span class="layui-hide-xs">Poweed by <a href="/" target="_blank" rel="nofollow">Wordpress</a></span>
 								<span>Theme by <a href="/" target="_blank">我的博客</a></span>
-								<a href="/" target="_blank" rel="nofollow">晋ICP备17009725号</a>
+								<a href="/" target="_blank" rel="nofollow"></a>
 							</span>
 						</div>
 					</div>

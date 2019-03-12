@@ -281,6 +281,71 @@ var app = new Vue({
 			}, function() {
 				console.log('获取博客信息失败！');
 			});
+		},
+		deleteComment: function(id) {
+			layui.layer.confirm('确认要删除吗？', {
+				icon: 3,
+				title: '确认删除'
+			}, function(index) {
+				layui.layer.close(index);
+				Vue.http.get(localhost + '/admin/deleteComment/' + id).then(function(res) {
+					console.log(res);
+					if (res.body.code == 200) {
+						app.getComment(app.listComment.pageNum);
+						layui.layer.msg('删除成功', {
+							icon: 1
+						});
+					} else {
+						layui.layer.msg('删除失败', {
+							icon: 2
+						});
+					}
+
+				}, function() {
+					console.log('获取博客信息失败！');
+				});
+			});
+		},
+		replyComment: function(parentId, blogId) {
+			layui.layer.open({
+				type: 1,
+				title: '回复评论',
+				content: '<div style="margin: 5px 5px 0px 5px;"><textarea id="replyComment" placeholder="请输入回复内容" class="layui-textarea"></textarea></div>',
+				area: '400px',
+				btn: ['确认', '取消'],
+				success: function(layero) {
+					var btn = layero.find('.layui-layer-btn');
+					btn.css('padding', '0px 0px 5px');
+				},
+				yes: function(index, layero) {
+					if(layui.$('#replyComment').val() == ''){
+						layui.layer.msg("请输入回复内容");
+						return;
+					}
+					Vue.http.post(localhost + '/comment/add', {
+						blogId: blogId,
+						parentId: parentId,
+						content: layui.$('#replyComment').val(),
+						guestEmail: '123@456.com',
+						guestName: '槑大佬'
+						
+					}, {
+						emulateJSON: true
+					}).then(function(res) {
+						console.log(res);
+						if (res.body.code == 200) {
+							layui.layer.msg(res.body.data + '!', {
+								icon: 1
+							});
+							layui.layer.close(index);
+							layui.$('#replyComment').val('');
+							app.showComment();
+						};
+					}, function() {
+						console.log('获取博客信息失败！');
+					});
+				}
+			});
 		}
 	}
 });
