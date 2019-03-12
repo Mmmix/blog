@@ -274,7 +274,7 @@ var app = new Vue({
 				app.listComment = res.body.data;
 				console.log(app);
 
-				if (n <= 1 || n > app.listData.pages) {
+				if (n <= 1 || n > app.listComment.pages) {
 					app.getCommentPage();
 				}
 
@@ -345,6 +345,25 @@ var app = new Vue({
 						console.log('获取博客信息失败！');
 					});
 				}
+			});
+		},
+		showCategory:function(category, pageNum){
+			console.log(pageNum);
+			Vue.http.get(localhost + '/blog/listByCategory/' + pageNum, {
+				params: {
+					pageSize: myPageSize,
+					category: category
+				}
+			}).then(function(res) {
+				app.listData = res.body.data;
+				console.log(app);
+			
+				if (pageNum <= 1 || pageNum > app.listData.pages) {
+					app.getPage();
+				}
+			
+			}, function() {
+				console.log('获取博客信息失败！');
 			});
 		}
 	}

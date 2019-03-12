@@ -53,7 +53,7 @@
 						<div class="t-i">
 							<a href="javascript:;" target="_blank" rel="nofollow" class="wxbusinesscard"><i class="fa fa-weixin fa-fw"></i>
 								<div class="wxbusinesscard_box">
-									<img src="" alt="扫一扫">
+									
 								</div>
 							</a>
 							<a href="javascript:;" rel="nofollow" target="_blank"><i class="fa fa-qq fa-fw"></i></a>
@@ -69,6 +69,10 @@
 						<!--循环输出独立页面-->
 						<li class="layui-nav-item">
 							<a href="javascript:;" class="nav-item-a" @click="showComment();"><i class="fa fa-fw fa-smile-o"></i><span>博客回复</span></a>
+						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:;" class="nav-item-a" @click="showComment();"><i class="fa fa-fw fa-sign-out"></i><span>注销登录</span></a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -191,11 +195,11 @@
 								<h3 class="title-sidebar"><i class="fa fa-folder"></i>栏目分类</h3>
 
 								<ul id="menu-%e7%b1%bb%e5%88%ab" class="">
-									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-16"><a href="http://www.weilai.info/category/front_end"><i
+									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-16"><a href="javascript:;" @click="showCategory('学习', 1);"><i
 											 class="fa fa-folder"></i> 学习<!-- <span class="layui-badge layui-bg-gray">9</span> --></a></li>
-									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18"><a href="http://www.weilai.info/category/rear_end"><i
+									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18"><a href="javascript:;" @click="showCategory('生活',1);"><i
 											 class="fa fa-folder"></i> 生活<!-- <span class="layui-badge layui-bg-gray">10</span> --></a></li>
-									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-264"><a href="http://www.weilai.info/category/tool"><i
+									<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-264"><a href="javascript:;" @click="showCategory('感悟',1);"><i
 											 class="fa fa-folder"></i> 感悟<!-- <span class="layui-badge layui-bg-gray">2</span> --></a></li>
 								</ul>
 
