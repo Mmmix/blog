@@ -31,7 +31,7 @@ var app = new Vue({
 					app.getMessage(1);
 				}else{
 					layui.use('layer',function(){
-						layui.layer.alert('用户未登录', {
+						layui.layer.msg('用户未登录', {
 							icon: 2
 						},function(index){
 							window.location.href="login.html";

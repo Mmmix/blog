@@ -31,6 +31,7 @@
 					<a href="album.html">相册</a>
 					<a href="about.html">关于</a>
 
+					<a href="blogManagement.html">管理员</a>
 				</div>
 				<!--<ul class="layui-nav" style="background-color: white;">
 					<li class="layui-nav-item">
@@ -49,7 +50,7 @@
 				-->
 				<input type="text" class="layui-input-block search_nav" v-model="title" @blur="getData(1)" placeholder="按标题搜索" />
 				<p class="welcome-text">
-					欢迎来到<span class="name">小明</span>的博客~
+					欢迎来到<span class="name">决赛圈</span>的博客~
 				</p>
 			</div>
 
@@ -64,9 +65,6 @@
 						<p><span class="text">日志</span><span class="daily-record">1000</span></p>
 					</div>-->
 				</div>
-			</div>
-			<div class="tlinks">Collect from
-				<a href="http://www.cssmoban.com/">网页模板</a>
 			</div>
 			<div class="content">
 				<div class="cont w1000">
@@ -177,7 +175,7 @@
 				el: '#app',
 				data: {
 					listData: [],
-					message: 'Hello Vue.js!',
+					message: 'WINNER WINNER CHICKEN DINNER!',
 					title: "",
 					category: ""
 				},
@@ -187,7 +185,8 @@
 						Vue.http.get(localhost + '/blog/list/' + n, {
 							params: {
 								'title': _this.title,
-								'category': _this.category
+								'category': _this.category,
+								'pageSize': 5
 							}
 						}).then(function(res) {
 							_this.listData = res.body.data;
