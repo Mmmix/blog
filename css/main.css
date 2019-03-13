@@ -27,6 +27,14 @@ body{font: 14px 宋体 Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-se
 
 .banner{height: 600px; width: 100%; background: url(../img/banner.jpg) no-repeat; background-size:cover;}
 .banner .cont{position: relative;}
+.reply{ 
+	background: #f7f8fa;
+    width: 90%;
+    border: 1px solid #f0f1f2;
+    margin-left: 10%;
+    margin-top: 5px;
+    position: relative;
+}
 .banner .title{color: #fff; position: absolute; top: 152px; left: 0;}
 .banner .title h3{font-size: 80px; line-height: 88px;}
 .banner .title h4{font-size: 46px;}

@@ -105,13 +105,22 @@
 								</div>
 								<div class="list-cont">
 
-									<div class="cont" v-for="commentItem in commentData.list">
+									<div class="cont" v-for="(commentItem,index) in commentData.list">
 										<div class="img">
 											<img src="../img/header.png" alt="">
 										</div>
 										<div class="text">
 											<p class="tit"><span class="name">{{commentItem.guestName}}</span><span class="data">{{commentItem.createTime}}</span></p>
-											<p class="ct">{{commentItem.content}}</p>
+											<p class="ct"><span>{{commentItem.content}}</span><span class="data">#{{index}}</span></p>
+										</div>
+										<div class="reply" v-for="child in commentItem.childList">
+											<div class="img">
+												<img src="../img/header.png" alt="">
+											</div>
+											<div class="text">
+											<p class="tit"><span class="name">{{child.guestName}}</span><span class="data">{{child.createTime}}</span></p>
+											<p class="ct">{{child.content}}</p>
+											</div>
 										</div>
 									</div>
 									
