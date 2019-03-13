@@ -60,7 +60,9 @@
 							if(res.body.code==-1){
 								_this.message = res.body.msg;
 							}else{
-								window.location.href="index.html";
+//								console.log(res);
+								sessionStorage.setItem("token",res.body.data.token);
+								window.location.href="blogManagement.html";
 							}
 						}, function(res) {
 							console.log(res.status);

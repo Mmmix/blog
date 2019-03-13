@@ -14,15 +14,58 @@ var app = new Vue({
 		addCategory: '',
 		addContent: '',
 		selected: '',
+		user: []
 	},
 	methods: {
+		getUser: function(){
+			_this = this;
+			Vue.http.get(localhost+'/user/getUser',{
+				params:{
+					'token': sessionStorage.getItem("token")
+				}
+			}).then(function(res){
+				
+				if(res.body.code == 200){
+					user = res.body.data;
+					app.getData(1);
+					app.getMessage(1);
+				}else{
+					layui.use('layer',function(){
+						layui.layer.alert('用户未登录', {
+							icon: 2
+						},function(index){
+							window.location.href="login.html";
+						});
+					});
+					
+				}
+			});
+		},
+		logout: function(){
+			Vue.http.get(localhost+'/logout',{
+				params:{
+					'token': sessionStorage.getItem("token")
+				}
+			}).then(function(res){
+				if(res.body.code==200){
+					sessionStorage.removeItem('token');
+					window.location.href="login.html";
+				}else{
+					console.log(res);
+				}
+			})
+		},
 		deleteBlog: function(n) {
 			layui.layer.confirm('确认要删除吗？', {
 				icon: 3,
 				title: '确认删除'
 			}, function(index) {
 				layui.layer.close(index);
-				Vue.http.get(localhost + '/admin/deleteBlog/' + n).then(function(res) {
+				Vue.http.get(localhost + '/admin/deleteBlog/' + n,{
+					params:{
+						token: sessionStorage.getItem("token")
+					}
+				}).then(function(res) {
 					console.log(app);
 					if (res.body.code == 200) {
 						app.getData(app.listData.pageNum);
@@ -114,6 +157,7 @@ var app = new Vue({
 		submitAdd: function(index) {
 			if (app.checkTitle() && app.checkTag() && app.checkCategory() && app.checkContent()) {
 				Vue.http.post(localhost + '/admin/add', {
+					token: sessionStorage.getItem("token"),
 					title: app.addTitle,
 					category: layui.$('#addCategory').val(),
 					context: layui.layedit.getContent(editIndex),
@@ -178,6 +222,8 @@ var app = new Vue({
 		submitMod: function(index, id) {
 			if (app.checkTitle() && app.checkTag() && app.checkCategory() && app.checkContent()) {
 				Vue.http.post(localhost + '/admin/modifyBlog', {
+					
+					token: sessionStorage.getItem("token"),
 					id: id,
 					title: app.addTitle,
 					category: layui.$('#addCategory').val(),
@@ -289,7 +335,11 @@ var app = new Vue({
 				title: '确认删除'
 			}, function(index) {
 				layui.layer.close(index);
-				Vue.http.get(localhost + '/admin/deleteComment/' + id).then(function(res) {
+				Vue.http.get(localhost + '/admin/deleteComment/' + id,{
+					params:{
+					'token': sessionStorage.getItem("token"),
+					}
+				}).then(function(res) {
 					console.log(res);
 					if (res.body.code == 200) {
 						app.getComment(app.listComment.pageNum);
@@ -385,6 +435,5 @@ var app = new Vue({
 		}
 	}
 });
-app.getData(1);
-app.getMessage(1);
+app.getUser();
 //app.getUser(1);
